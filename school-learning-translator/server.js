@@ -21,6 +21,19 @@ function readBody(req) {
   });
 }
 
+function parseQuiz(answer) {
+  const clean = answer.replace(/^```json\s*/i, '').replace(/```\s*$/i, '').trim();
+  const quiz = JSON.parse(clean);
+  if (!Array.isArray(quiz.questions) || quiz.questions.length === 0) throw new Error('Quiz format is missing questions.');
+  quiz.questions = quiz.questions.map(question => {
+    if (!question.question || !Array.isArray(question.choices) || question.choices.length < 2 || !Number.isInteger(question.answerIndex)) {
+      throw new Error('Quiz format is missing a question, choices, or answer.');
+    }
+    return { question: String(question.question), choices: question.choices.map(String), answerIndex: question.answerIndex, explanation: String(question.explanation || '') };
+  });
+  return quiz;
+}
+
 async function handleAI(req, res) {
   try {
     const input = JSON.parse(await readBody(req));
@@ -31,9 +44,10 @@ async function handleAI(req, res) {
       ? `Explain this school word for a young learner. Give a short meaning and one example sentence. Word: ${input.text}`
       : input.action === 'translate'
         ? `Translate this school text into ${input.language || 'the student’s home language'}. Show the translation and one short explanation of an important word. Text: ${input.text}`
-        : `Make a short three-question quiz from these school words. Give one question at a time and wait for the student's answer. Words: ${input.text}`;
+        : `Make a short three-question quiz from these school words. Return JSON only in this exact shape: {"questions":[{"question":"...","choices":["...","...","..."],"answerIndex":0,"explanation":"..."}]}. answerIndex must be the zero-based correct choice. Keep it safe and easy for a young learner. Words: ${input.text}`;
     const key = await getKey();
     const answer = await askAI(key, prompt);
+    if (input.action === 'quiz') return json(res, 200, { quiz: parseQuiz(answer) });
     return json(res, 200, { answer });
   } catch (error) {
     console.error(error.fix || 'The AI request failed.');
