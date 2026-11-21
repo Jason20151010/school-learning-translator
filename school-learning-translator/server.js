@@ -23,7 +23,12 @@ function readBody(req) {
 
 function parseQuiz(answer) {
   const clean = answer.replace(/^```json\s*/i, '').replace(/```\s*$/i, '').trim();
-  const quiz = JSON.parse(clean);
+  const start = clean.indexOf('{');
+  const end = clean.lastIndexOf('}');
+  if (start < 0 || end <= start) throw Object.assign(new Error('The quiz could not be generated.'), { fix: 'Try again with fewer words or a shorter quiz.' });
+  let quiz;
+  try { quiz = JSON.parse(clean.slice(start, end + 1)); }
+  catch { throw Object.assign(new Error('The quiz could not be generated.'), { fix: 'Try again with fewer words or a shorter quiz.' }); }
   if (!Array.isArray(quiz.questions) || quiz.questions.length === 0) throw new Error('Quiz format is missing questions.');
   quiz.questions = quiz.questions.map(question => {
     const type = String(question.type || 'multiple_choice');
@@ -54,9 +59,9 @@ async function handleAI(req, res) {
       ? `Explain this school word for a young learner. Give a short meaning and one example sentence. Word: ${input.text}`
       : input.action === 'translate'
         ? `Translate this school text into ${input.language || 'the student’s home language'}. Show the translation and one short explanation of an important word. Text: ${input.text}`
-        : `Make a ${input.length || 'short'} quiz for a ${input.grade || 'elementary'} student from these school words. Use a mix of multiple_choice, multi_select, true_false, short_answer, and essay question types. Use about ${input.length === 'long' ? 8 : input.length === 'medium' ? 5 : 3} questions. Return JSON only in this shape: {"questions":[{"type":"multiple_choice|multi_select|true_false|short_answer|essay","question":"...","choices":["..."],"correctIndex":0,"correctIndexes":[0,2],"correctBoolean":true,"acceptedAnswers":["..."],"sampleAnswer":"...","explanation":"..."}]}. Include only the fields needed by each type. Keep it safe, clear, age appropriate, and based on these words: ${input.text}`;
+        : `Make a ${input.length || 'short'} quiz for a ${input.grade || 'elementary'} student from these school words. Use a mix of multiple_choice, multi_select, true_false, short_answer, and essay question types. Use about ${input.length === 'long' ? 8 : input.length === 'medium' ? 5 : 3} questions. Return compact JSON only, with no markdown, in this shape: {"questions":[{"type":"multiple_choice|multi_select|true_false|short_answer|essay","question":"...","choices":["..."],"correctIndex":0,"correctIndexes":[0,2],"correctBoolean":true,"acceptedAnswers":["..."],"sampleAnswer":"...","explanation":"..."}]}. Include only needed fields, keep explanations under 12 words, and keep it safe, clear, age appropriate, and based on these words: ${input.text}`;
     const key = await getKey();
-    const answer = await askAI(key, prompt);
+    const answer = await askAI(key, prompt, input.action === 'quiz' ? { maxOutputTokens: 2400 } : undefined);
     if (input.action === 'quiz') return json(res, 200, { quiz: parseQuiz(answer) });
     return json(res, 200, { answer });
   } catch (error) {

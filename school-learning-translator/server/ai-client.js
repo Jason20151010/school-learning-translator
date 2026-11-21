@@ -9,8 +9,8 @@ function readInstructions() {
   return start >= 0 ? brief.slice(start) : 'Answer in friendly, simple, age-appropriate language and protect children’s privacy.';
 }
 
-function askAI(apiKey, message) {
-  const requestBody = JSON.stringify({ model: 'gpt-5.6-luna', instructions: readInstructions(), input: message, max_output_tokens: 500 });
+function askAI(apiKey, message, { maxOutputTokens = 700 } = {}) {
+  const requestBody = JSON.stringify({ model: 'gpt-5.6-luna', instructions: readInstructions(), input: message, max_output_tokens: maxOutputTokens });
   return new Promise((resolve, reject) => {
     const request = https.request('https://api.openai.com/v1/responses', {
       method: 'POST',
