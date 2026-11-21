@@ -22,6 +22,9 @@ textarea:focus,select:focus,button:focus { outline:3px solid #93c5fd; outline-of
 .answer h3 { color:var(--navy); margin:12px 0 5px; }
 .reply-bullet { display:block; margin:4px 0; }
 .answer code { background:#e2e8f0; border-radius:5px; padding:2px 5px; font-size:.92em; }
+.quiz-settings { margin-top: 6px; padding: 12px 14px; background: #f8fafc; border-radius: 14px; }
+.quiz-settings[hidden] { display:none; }
+.quiz-form input[type="text"],.quiz-form textarea { width:100%; margin-top:8px; }
 .answer[hidden], #quiz[hidden] { display:none; }
 .quiz-form fieldset { border:1px solid #dbe4ef; border-radius:14px; margin:14px 0; padding:14px; }
 .quiz-form legend { color:var(--navy); font-weight:800; padding:0 5px; }

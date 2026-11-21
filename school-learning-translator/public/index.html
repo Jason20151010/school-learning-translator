@@ -28,6 +28,12 @@
         <select id="language-input">
           <option>Spanish</option><option>Chinese</option><option>Arabic</option><option>Vietnamese</option><option>French</option>
         </select>
+        <div id="quiz-settings" class="quiz-settings" hidden>
+          <label for="quiz-length">Quiz length</label>
+          <select id="quiz-length"><option value="short">Short (3 questions)</option><option value="medium">Medium (5 questions)</option><option value="long">Long (8 questions)</option></select>
+          <label for="grade-level">Grade group</label>
+          <select id="grade-level"><option value="elementary">Elementary</option><option value="junior high">Junior high</option><option value="high school">High school</option></select>
+        </div>
         <button id="check-button" class="primary" type="submit">Check</button>
       </form>
       <p id="status" class="status" aria-live="polite"></p>
