@@ -1,0 +1,7 @@
+{
+  "name": "school-learning-translator",
+  "private": true,
+  "scripts": {
+    "start": "node server.js"
+  }
+}

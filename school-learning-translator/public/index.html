@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>School Learning Translator</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <main class="shell">
+    <header class="hero">
+      <p class="eyebrow">LEARN • TRANSLATE • PRACTICE</p>
+      <h1>School Learning Translator</h1>
+      <p class="intro">Understand school words and messages in a way that helps you learn.</p>
+    </header>
+
+    <section class="card learning-card" aria-labelledby="learning-title">
+      <div class="tabs" role="tablist" aria-label="Learning activity">
+        <button id="explain-tab" class="tab active" data-action="explain" role="tab">Explain a word</button>
+        <button id="translate-tab" class="tab" data-action="translate" role="tab">Translate</button>
+        <button class="tab" data-action="quiz" role="tab">Quick quiz</button>
+      </div>
+      <h2 id="learning-title">What do you want to learn?</h2>
+      <form id="learning-form">
+        <label for="text-input">Your word or sentence</label>
+        <textarea id="text-input" rows="3" placeholder="Type one school word…" required></textarea>
+        <label for="language-input">Home language for translation</label>
+        <select id="language-input">
+          <option>Spanish</option><option>Chinese</option><option>Arabic</option><option>Vietnamese</option><option>French</option>
+        </select>
+        <button id="check-button" class="primary" type="submit">Check</button>
+      </form>
+      <p id="status" class="status" aria-live="polite"></p>
+      <div class="answer" aria-live="polite"><strong>Your learning answer</strong><p id="answer">Your answer will appear here.</p></div>
+    </section>
+
+    <section class="card difference"><span class="badge">WHY THIS IS DIFFERENT</span><p>Translation tells you what words mean. This app also explains, gives examples, and helps you practice.</p></section>
+
+    <section class="card recent"><h2>Words on this computer</h2><p class="muted">Saves on this computer only for now.</p><div id="recent-list" class="recent-list"></div></section>
+    <footer>Made for students and families • No ads • No hidden tracking</footer>
+  </main>
+  <script src="/storage.js"></script><script src="/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+:root { color-scheme: light; --navy:#18324a; --blue:#2563eb; --teal:#0f766e; --cream:#f5f7fb; --ink:#1f2937; --muted:#64748b; }
+* { box-sizing: border-box; }
+body { margin: 0; background: linear-gradient(135deg,#eaf3ff,#f8fbff 55%,#e8faf6); color: var(--ink); font: 17px/1.5 system-ui,-apple-system,Segoe UI,sans-serif; }
+.shell { max-width: 880px; margin: auto; padding: 42px 20px 56px; }
+.hero { text-align: center; margin-bottom: 26px; }
+.eyebrow,.badge { color: var(--teal); font-weight: 800; letter-spacing: .12em; font-size: .78rem; }
+h1 { color: var(--navy); font-size: clamp(2.2rem,6vw,4.2rem); line-height: 1; margin: 12px 0; }
+h2 { color: var(--navy); margin-top: 0; }
+.intro { color: var(--muted); font-size: 1.15rem; }
+.card { background: rgba(255,255,255,.94); border: 1px solid #dbe7f3; border-radius: 22px; padding: 24px; margin: 18px 0; box-shadow: 0 14px 40px rgba(28,67,105,.08); }
+.tabs { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:26px; }
+.tab,.recent-item { border: 1px solid #cbd5e1; background:#fff; border-radius:999px; padding:10px 15px; cursor:pointer; color:var(--navy); font:inherit; }
+.tab.active { background: var(--navy); color:#fff; border-color:var(--navy); }
+label { display:block; font-weight:700; margin:14px 0 6px; }
+textarea,select { width:100%; border:2px solid #dbe4ef; border-radius:14px; padding:13px; font:inherit; background:#fff; }
+textarea:focus,select:focus,button:focus { outline:3px solid #93c5fd; outline-offset:2px; }
+.primary { width:100%; margin-top:18px; border:0; border-radius:14px; padding:14px; background:var(--blue); color:#fff; font:800 1rem inherit; cursor:pointer; }
+.primary:disabled { opacity:.55; cursor:wait; }
+.status { min-height: 1.5em; color:var(--blue); font-weight:700; }
+.answer { background:#f0f7ff; border-radius:15px; padding:18px; min-height:120px; }
+.answer p { white-space:pre-wrap; }
+.difference { display:flex; gap:18px; align-items:center; background:#ecfdf5; border-color:#bbf7d0; }
+.difference p { margin:0; }
+.muted { color:var(--muted); }
+.recent-list { display:flex; gap:8px; flex-wrap:wrap; }
+footer { text-align:center; color:var(--muted); margin-top:24px; font-size:.9rem; }
+@media (max-width:560px) { .card { padding:18px; } .difference { display:block; } }
