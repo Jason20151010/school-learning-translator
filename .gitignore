@@ -1,6 +1,7 @@
 vincent-snack-shack/
 node_modules/
 .env*
+.env
 .vercel/
 .expo/
 .DS_Store
