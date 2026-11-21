@@ -8,6 +8,23 @@ const checkButton = document.querySelector('#check-button');
 const recentList = document.querySelector('#recent-list');
 let action = 'explain';
 
+function renderReply(text) {
+  const escaped = String(text)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+  return escaped
+    .replace(/^### (.+)$/gm, '<h3>$1</h3>')
+    .replace(/^## (.+)$/gm, '<h3>$1</h3>')
+    .replace(/^[-•] (.+)$/gm, '<span class="reply-bullet">• $1</span>')
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*([^*\n]+)\*/g, '<em>$1</em>')
+    .replace(/`([^`]+)`/g, '<code>$1</code>')
+    .replace(/\n/g, '<br>');
+}
+
 function renderQuiz(data) {
   answer.hidden = true;
   quiz.hidden = false;
@@ -83,7 +100,7 @@ form.addEventListener('submit', async event => {
     const data = await response.json();
     if (!response.ok) throw new Error(data.error?.message || 'Please check the internet and try again.');
     if (action === 'quiz') renderQuiz(data.quiz);
-    else answer.textContent = data.answer;
+    else answer.innerHTML = renderReply(data.answer);
     if (action === 'explain') schoolStorage.saveItem({ word: textInput.value.trim(), meaning: data.answer, example: '' });
     showRecent();
   } catch (error) {
