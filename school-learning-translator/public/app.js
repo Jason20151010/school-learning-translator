@@ -2,6 +2,8 @@ const form = document.querySelector('#learning-form');
 const textInput = document.querySelector('#text-input');
 const languageInput = document.querySelector('#language-input');
 const quizSettings = document.querySelector('#quiz-settings');
+const photoSettings = document.querySelector('#photo-settings');
+const photoInput = document.querySelector('#photo-input');
 const quizLength = document.querySelector('#quiz-length');
 const gradeLevel = document.querySelector('#grade-level');
 const answer = document.querySelector('#answer');
@@ -107,13 +109,28 @@ function showRecent() {
 document.querySelectorAll('[data-action]').forEach(tab => tab.addEventListener('click', () => {
   action = tab.dataset.action;
   quizSettings.hidden = action !== 'quiz';
+  photoSettings.hidden = action !== 'photo';
+  textInput.required = action !== 'photo' || !photoInput.files.length;
   document.querySelectorAll('[data-action]').forEach(item => item.classList.toggle('active', item === tab));
-  textInput.placeholder = action === 'translate' ? 'Type a word or sentence to translate…' : action === 'quiz' ? 'Type words you looked up, separated by commas…' : 'Type one school word…';
+  textInput.placeholder = action === 'translate' ? 'Type a word or sentence to translate…' : action === 'quiz' ? 'Type words you looked up, separated by commas…' : action === 'photo' ? 'What do you want help solving in the photo?' : 'Type one school word…';
 }));
+
+photoInput.addEventListener('change', () => {
+  textInput.required = action !== 'photo' || !photoInput.files.length;
+});
+
+function readPhoto(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = () => reject(new Error('The photo could not be read. Please choose it again.'));
+    reader.readAsDataURL(file);
+  });
+}
 
 form.addEventListener('submit', async event => {
   event.preventDefault();
-  if (!textInput.value.trim()) return;
+  if (!textInput.value.trim() || (action === 'photo' && !photoInput.files.length)) return;
   checkButton.disabled = true;
   status.textContent = 'Thinking…';
   answer.textContent = '';
@@ -121,7 +138,9 @@ form.addEventListener('submit', async event => {
   quiz.hidden = true;
   quiz.innerHTML = '';
   try {
-    const response = await fetch('/api/ai', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action, text: textInput.value.trim(), language: languageInput.value, length: quizLength.value, grade: gradeLevel.value }) });
+    const request = { action, text: textInput.value.trim(), language: languageInput.value, length: quizLength.value, grade: gradeLevel.value };
+    if (action === 'photo') request.image = await readPhoto(photoInput.files[0]);
+    const response = await fetch('/api/ai', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(request) });
     const data = await response.json();
     if (!response.ok) throw new Error(data.error?.message || 'Please check the internet and try again.');
     if (action === 'quiz') renderQuiz(data.quiz);

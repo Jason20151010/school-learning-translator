@@ -19,11 +19,17 @@
         <button id="explain-tab" class="tab active" data-action="explain" role="tab">Explain a word</button>
         <button id="translate-tab" class="tab" data-action="translate" role="tab">Translate</button>
         <button class="tab" data-action="quiz" role="tab">Quick quiz</button>
+        <button class="tab" data-action="photo" role="tab">Ask with a photo</button>
       </div>
       <h2 id="learning-title">What do you want to learn?</h2>
       <form id="learning-form">
         <label for="text-input">Your word or sentence</label>
         <textarea id="text-input" rows="3" placeholder="Type one school word…" required></textarea>
+        <div id="photo-settings" hidden>
+          <label for="photo-input">Photo of your school question</label>
+          <input id="photo-input" type="file" accept="image/*" capture="environment">
+          <p class="muted">Take a clear photo of the question. Do not include names, addresses, or private information.</p>
+        </div>
         <label for="language-input">Home language for translation</label>
         <select id="language-input">
           <option>Spanish</option><option>Chinese</option><option>Arabic</option><option>Vietnamese</option><option>French</option>

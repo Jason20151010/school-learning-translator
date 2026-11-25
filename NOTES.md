@@ -17,7 +17,7 @@ Saves on this computer only for now.
 From the project folder, run: `node school-learning-translator/server.js`
 
 ## Version 1 status
-Done: explain a word, translate text, quiz prompt, browser-only local saving, server-side AI key handling, and child-safety copy.
+Done: explain a word, translate text, quiz prompt, photo questions, browser-only local saving, server-side AI key handling, and child-safety copy.
 Next: test with student feedback, improve quiz answer flow, and add a real school privacy review before launch.
 
 ## Vercel
