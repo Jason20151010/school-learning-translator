@@ -19,3 +19,12 @@ From the project folder, run: `node school-learning-translator/server.js`
 ## Version 1 status
 Done: explain a word, translate text, quiz prompt, browser-only local saving, server-side AI key handling, and child-safety copy.
 Next: test with student feedback, improve quiz answer flow, and add a real school privacy review before launch.
+
+## Vercel
+Vercel uses the root `api/ai.js` serverless function for the AI request and `vercel.json` routes browser files from `school-learning-translator/public/`. The local command still works: `node school-learning-translator/server.js`.
+
+Set these Vercel Project Environment Variables for Production, Preview, and Development:
+- `KEYGEN_URL`
+- `KEYGEN_TOKEN`
+
+No other Vercel setting is required. Keep the Vercel project root at the repository root.
